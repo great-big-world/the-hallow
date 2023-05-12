@@ -1,6 +1,8 @@
 {
   "block.hallow.anointing_table": "Anointing Table",
 
+  "effect.hallow.hexed": "Hexed",
+
   "container.anoint": "Anoint",
 
   "hallow.subtitles.block.anointing_table.use": "Anointing Table used",

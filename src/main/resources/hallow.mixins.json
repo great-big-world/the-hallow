@@ -4,8 +4,7 @@
   "package": "com.github.creoii.hallow.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-  ],
-  "client": [
+    "entity.LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
