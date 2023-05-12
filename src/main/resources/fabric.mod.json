@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "hallow",
+  "version": "${version}",
+  "name": "The Hallow",
+  "description": "",
+  "authors": [
+    "creoii"
+  ],
+  "contact": {
+    "repo": "https://github.com/great-big-world/the-hallow"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/hallow/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.github.creoii.hallow.client.TheHallowClient"
+    ],
+    "main": [
+      "com.github.creoii.hallow.main.TheHallow"
+    ]
+  },
+  "mixins": [
+    "hallow.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
