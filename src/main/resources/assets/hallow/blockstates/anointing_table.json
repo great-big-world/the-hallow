@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,activated=false": {
+      "model": "hallow:block/anointing_table",
+      "y": 90
+    },
+    "facing=north,activated=false": {
+      "model": "hallow:block/anointing_table"
+    },
+    "facing=south,activated=false": {
+      "model": "hallow:block/anointing_table",
+      "y": 180
+    },
+    "facing=west,activated=false": {
+      "model": "hallow:block/anointing_table",
+      "y": 270
+    },
+    "facing=east,activated=true": {
+      "model": "hallow:block/anointing_table_activated",
+      "y": 90
+    },
+    "facing=north,activated=true": {
+      "model": "hallow:block/anointing_table_activated"
+    },
+    "facing=south,activated=true": {
+      "model": "hallow:block/anointing_table_activated",
+      "y": 180
+    },
+    "facing=west,activated=true": {
+      "model": "hallow:block/anointing_table_activated",
+      "y": 270
+    }
+  }
+}

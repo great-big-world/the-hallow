@@ -1,0 +1,7 @@
+{
+  "type": "hallow:anointing",
+  "equipment_type": "armor",
+  "anointment": "minecraft:diamond",
+  "attribute": "minecraft:generic.armor",
+  "amount": 1.0
+}
