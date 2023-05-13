@@ -1,5 +1,6 @@
 package com.github.creoii.hallow.screen;
 
+import com.github.creoii.creolib.api.tag.CItemTags;
 import com.github.creoii.hallow.block.AnointingTableBlock;
 import com.github.creoii.hallow.main.registry.HallowBlocks;
 import com.github.creoii.hallow.main.registry.HallowRecipes;
@@ -12,21 +13,20 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.*;
-import net.minecraft.recipe.SmithingRecipe;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 public class AnointingScreenHandler extends ScreenHandler {
     private final World world;
     private AnointingRecipe recipe;
-    private final List<AnointingRecipe> recipes;
     protected final ScreenHandlerContext context;
     protected final CraftingResultInventory output = new CraftingResultInventory();
     protected final Inventory input = new SimpleInventory(3) {
@@ -44,11 +44,10 @@ public class AnointingScreenHandler extends ScreenHandler {
         super(HallowRecipes.ANOINTING_SCREEN, id);
         world = inventory.player.world;
         this.context = context;
-        recipes = world.getRecipeManager().listAllOfType(HallowRecipes.ANOINTING_TYPE);
         addSlot(new Slot(input, 0, 27, 31) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.getItem() instanceof Equipment || stack.isIn(ItemTags.TOOLS);
+                return stack.isIn(CItemTags.EQUIPMENT);
             }
 
             @Override
@@ -162,7 +161,7 @@ public class AnointingScreenHandler extends ScreenHandler {
     }
 
     private static Optional<Integer> getSlotFor(ItemStack stack) {
-        if (stack.getItem() instanceof Equipment || stack.isIn(ItemTags.TOOLS)) {
+        if (stack.isIn(CItemTags.EQUIPMENT)) {
             return Optional.of(0);
         }
         if (stack.isIn(HallowItemTags.ANOINTING_CRYSTALS)) {

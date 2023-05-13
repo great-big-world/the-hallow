@@ -11,23 +11,19 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.*;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.mutable.MutableDouble;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.function.Predicate;
@@ -147,19 +143,19 @@ public class AnointingRecipe implements Recipe<Inventory> {
 
     public enum EquipmentType {
         ALL(stack -> {
-            return stack.getItem() instanceof Equipment;
+            return stack.isIn(CItemTags.EQUIPMENT);
         }),
         TOOL(stack -> {
             return stack.isIn(ItemTags.TOOLS);
         }),
         MELEE_WEAPON(stack -> {
-            return stack.isIn(ItemTags.SWORDS) || stack.isOf(Items.TRIDENT);
+            return stack.isIn(CItemTags.MELEE_WEAPONS);
         }),
         HELD(stack -> {
-            return stack.isIn(ItemTags.TOOLS) || stack.isIn(ItemTags.SWORDS) || stack.isOf(Items.TRIDENT);
+            return stack.isIn(ItemTags.TOOLS) || stack.isIn(CItemTags.MELEE_WEAPONS);
         }),
         ARMOR(stack -> {
-            return stack.isIn(CItemTags.HELMETS) || stack.isIn(CItemTags.CHESTPLATES) || stack.isIn(CItemTags.LEGGINGS) || stack.isIn(CItemTags.BOOTS);
+            return stack.isIn(CItemTags.ARMOR);
         });
 
         private final Predicate<ItemStack> test;
