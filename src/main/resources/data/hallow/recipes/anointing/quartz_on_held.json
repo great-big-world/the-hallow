@@ -1,0 +1,7 @@
+{
+  "type": "hallow:anointing",
+  "equipment_type": "held",
+  "anointment": "minecraft:quartz",
+  "attribute": "creo:player.block_break_cooldown",
+  "amount": -1.0
+}

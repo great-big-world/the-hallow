@@ -1,0 +1,7 @@
+{
+  "type": "hallow:anointing",
+  "equipment_type": "held",
+  "anointment": "minecraft:emerald",
+  "attribute": "minecraft:generic.attack_speed",
+  "amount": -0.2
+}

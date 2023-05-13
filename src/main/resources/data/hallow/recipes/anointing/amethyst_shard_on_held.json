@@ -1,0 +1,7 @@
+{
+  "type": "hallow:anointing",
+  "equipment_type": "held",
+  "anointment": "minecraft:amethyst_shard",
+  "attribute": "minecraft:player.attack_knockback",
+  "amount": 0.5
+}

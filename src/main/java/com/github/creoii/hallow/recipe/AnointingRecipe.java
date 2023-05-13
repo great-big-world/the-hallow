@@ -2,13 +2,22 @@ package com.github.creoii.hallow.recipe;
 
 import com.github.creoii.creolib.api.tag.CItemTags;
 import com.github.creoii.hallow.main.registry.HallowRecipes;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -17,7 +26,10 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.mutable.MutableDouble;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class AnointingRecipe implements Recipe<Inventory> {
@@ -36,7 +48,6 @@ public class AnointingRecipe implements Recipe<Inventory> {
         this.amount = amount;
     }
 
-    @Override
     public ItemStack getOutput(DynamicRegistryManager manager) {
         return output;
     }
@@ -64,13 +75,30 @@ public class AnointingRecipe implements Recipe<Inventory> {
 
     @Override
     public boolean matches(Inventory inventory, World world) {
-        if (inventory.size() < 3) return false;
+        if (inventory.size() < 3 || inventory.size() > 3) return false;
         return equipmentType.test(inventory.getStack(0)) && inventory.getStack(1).getItem() == anointment && inventory.getStack(2).isOf(Items.GLOWSTONE_DUST);
     }
 
     @Override
     public ItemStack craft(Inventory inventory, DynamicRegistryManager manager) {
-        return inventory.getStack(0).copy();
+        ItemStack stack = inventory.getStack(0).copy();
+        if (stack.getOrCreateNbt().getBoolean("Anointed")) return ItemStack.EMPTY;
+
+        double amount = getAmount();
+        EquipmentSlot slot = LivingEntity.getPreferredEquipmentSlot(stack);
+
+        Multimap<EntityAttribute, EntityAttributeModifier> oldAttributesMap = stack.getAttributeModifiers(slot);
+        Multimap<EntityAttribute, EntityAttributeModifier> newAttributesMap = HashMultimap.create();
+        for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : oldAttributesMap.entries()) {
+            EntityAttributeModifier modifier = entry.getValue();
+            if (entry.getKey() != attribute || modifier.getOperation() != EntityAttributeModifier.Operation.ADDITION) {
+                newAttributesMap.put(entry.getKey(), modifier);
+            } else amount += modifier.getValue();
+        }
+        stack.addAttributeModifier(attribute, new EntityAttributeModifier("Anointment bonus", amount, EntityAttributeModifier.Operation.ADDITION), slot);
+        newAttributesMap.forEach((attribute1, entityAttributeModifier) -> stack.addAttributeModifier(attribute1, entityAttributeModifier, slot));
+        EnchantmentHelper.set(EnchantmentHelper.get(inventory.getStack(0)), stack);
+        return stack;
     }
 
     @Override
@@ -127,11 +155,8 @@ public class AnointingRecipe implements Recipe<Inventory> {
         MELEE_WEAPON(stack -> {
             return stack.isIn(ItemTags.SWORDS) || stack.isOf(Items.TRIDENT);
         }),
-        RANGED_WEAPON(stack -> {
-            return stack.isOf(Items.BOW) || stack.isOf(Items.CROSSBOW);
-        }),
         HELD(stack -> {
-            return stack.isIn(ItemTags.TOOLS) || stack.isIn(ItemTags.SWORDS) || stack.isOf(Items.TRIDENT) || stack.isOf(Items.BOW) || stack.isOf(Items.CROSSBOW);
+            return stack.isIn(ItemTags.TOOLS) || stack.isIn(ItemTags.SWORDS) || stack.isOf(Items.TRIDENT);
         }),
         ARMOR(stack -> {
             return stack.isIn(CItemTags.HELMETS) || stack.isIn(CItemTags.CHESTPLATES) || stack.isIn(CItemTags.LEGGINGS) || stack.isIn(CItemTags.BOOTS);

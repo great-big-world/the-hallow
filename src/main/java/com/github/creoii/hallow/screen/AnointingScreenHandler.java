@@ -6,20 +6,15 @@ import com.github.creoii.hallow.main.registry.HallowRecipes;
 import com.github.creoii.hallow.main.registry.HallowSoundEvents;
 import com.github.creoii.hallow.main.registry.tag.HallowItemTags;
 import com.github.creoii.hallow.recipe.AnointingRecipe;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
+import net.minecraft.recipe.SmithingRecipe;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -53,19 +48,37 @@ public class AnointingScreenHandler extends ScreenHandler {
         addSlot(new Slot(input, 0, 27, 31) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.getItem() instanceof Equipment;
+                return stack.getItem() instanceof Equipment || stack.isIn(ItemTags.TOOLS);
+            }
+
+            @Override
+            public ItemStack insertStack(ItemStack stack, int count) {
+                recipe.setOutput(stack);
+                return super.insertStack(stack, count);
             }
         });
         addSlot(new Slot(input, 1, 76, 31) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.isIn(HallowItemTags.ANOINTING_CRYSTALS);
+                return stack.isIn(HallowItemTags.ANOINTING_CRYSTALS) && !input.getStack(0).isEmpty();
+            }
+
+            @Override
+            public ItemStack insertStack(ItemStack stack, int count) {
+                recipe.setOutput(input.getStack(0));
+                return super.insertStack(stack, count);
             }
         });
         addSlot(new Slot(input, 2, 76, 51) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.getItem() == Items.GLOWSTONE_DUST;
+                return stack.getItem() == Items.GLOWSTONE_DUST && !input.getStack(0).isEmpty();
+            }
+
+            @Override
+            public ItemStack insertStack(ItemStack stack, int count) {
+                recipe.setOutput(input.getStack(0));
+                return super.insertStack(stack, count);
             }
         });
         addSlot(new Slot(output, 3, 134, 31) {
@@ -141,28 +154,6 @@ public class AnointingScreenHandler extends ScreenHandler {
         else {
             recipe = list.get(0);
             ItemStack stack = recipe.craft(input, world.getRegistryManager());
-            if (stack.getOrCreateNbt().getBoolean("Anointed")) return;
-            EnchantmentHelper.set(EnchantmentHelper.get(input.getStack(0)), stack);
-
-            EntityAttribute attribute = recipe.getAttribute();
-            double amount = recipe.getAmount();
-
-            EquipmentSlot slot = MobEntity.getPreferredEquipmentSlot(stack);
-            Multimap<EntityAttribute, EntityAttributeModifier> newAttributes = HashMultimap.create();
-            for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : stack.getAttributeModifiers(slot).entries()) {
-                EntityAttributeModifier modifier = entry.getValue();
-                if (entry.getKey() == attribute && modifier.getOperation() == EntityAttributeModifier.Operation.ADDITION) {
-                    amount += modifier.getValue();
-                } else newAttributes.put(entry.getKey(), modifier);
-            }
-            newAttributes.put(attribute, new EntityAttributeModifier("Anointment bonus", amount, EntityAttributeModifier.Operation.ADDITION));
-
-            for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : newAttributes.entries()) {
-                for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry1 : stack.getAttributeModifiers(slot).entries()) {
-                    if (!entry.getKey().getTranslationKey().equals(entry1.getKey().getTranslationKey())) stack.addAttributeModifier(entry.getKey(), entry.getValue(), slot);
-                }
-            }
-
             recipe.setOutput(stack);
             stack.getOrCreateNbt().putBoolean("Anointed", true);
             output.setLastRecipe(recipe);
@@ -170,8 +161,17 @@ public class AnointingScreenHandler extends ScreenHandler {
         }
     }
 
-    protected boolean method_30025(ItemStack stack) {
-        return recipes.stream().anyMatch(recipe -> recipe.getAnointment() == stack.getItem()) || stack.getItem() == Items.GLOWSTONE_DUST;
+    private static Optional<Integer> getSlotFor(ItemStack stack) {
+        if (stack.getItem() instanceof Equipment || stack.isIn(ItemTags.TOOLS)) {
+            return Optional.of(0);
+        }
+        if (stack.isIn(HallowItemTags.ANOINTING_CRYSTALS)) {
+            return Optional.of(1);
+        }
+        if (stack.isOf(Items.GLOWSTONE_DUST)) {
+            return Optional.of(2);
+        }
+        return Optional.empty();
     }
 
     public ItemStack quickMove(PlayerEntity player, int index) {
@@ -188,8 +188,8 @@ public class AnointingScreenHandler extends ScreenHandler {
                 slot.onQuickTransfer(itemStack2, itemStack);
             } else if (index != 0 && index != 1 && index != 2) {
                 if (index >= 4 && index < 40) {
-                    int i = method_30025(itemStack) ? 1 : 0;
-                    if (!insertItem(itemStack2, i, 3, false)) {
+                    Optional<Integer> slotFor = getSlotFor(itemStack);
+                    if (slotFor.isPresent() && !insertItem(itemStack2, slotFor.get(), 3, false)) {
                         return ItemStack.EMPTY;
                     }
                 }

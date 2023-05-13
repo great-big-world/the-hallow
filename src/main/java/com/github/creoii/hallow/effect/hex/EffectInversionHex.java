@@ -8,6 +8,8 @@ import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class EffectInversionHex extends Hex {
@@ -36,12 +38,16 @@ public class EffectInversionHex extends Hex {
 
     @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
-        Map<StatusEffect, StatusEffectInstance> activeEffects = entity.getActiveStatusEffects();
-        activeEffects.forEach((effect, instance) -> {
-            if (INVERSION_MAP.containsKey(effect)) {
-                entity.removeStatusEffect(effect);
-                entity.addStatusEffect(new StatusEffectInstance(INVERSION_MAP.get(effect), instance.getDuration(), instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles(), instance.shouldShowIcon()));
-            }
+        List<StatusEffect> toInvert = new LinkedList<>();
+        entity.getActiveStatusEffects().forEach((effect, instance) -> {
+            if (INVERSION_MAP.containsKey(effect))
+                toInvert.add(effect);
+        });
+
+        toInvert.forEach(statusEffect -> {
+            StatusEffectInstance instance = entity.getActiveStatusEffects().get(statusEffect);
+            entity.removeStatusEffect(statusEffect);
+            entity.addStatusEffect(new StatusEffectInstance(INVERSION_MAP.get(statusEffect), instance.getDuration(), instance.getAmplifier(), instance.isAmbient(), instance.shouldShowParticles(), instance.shouldShowIcon()));
         });
     }
 }

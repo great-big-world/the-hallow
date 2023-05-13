@@ -1,0 +1,7 @@
+{
+  "type": "hallow:anointing",
+  "equipment_type": "armor",
+  "anointment": "minecraft:emerald",
+  "attribute": "minecraft:generic.movement_speed",
+  "amount": 0.05
+}
