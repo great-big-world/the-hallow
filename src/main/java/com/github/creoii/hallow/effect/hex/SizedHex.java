@@ -1,6 +1,6 @@
 package com.github.creoii.hallow.effect.hex;
 
-import com.github.creoii.creolib.api.registry.CAttributes;
+import com.github.creoii.creolib.api.registry.CEntityAttributes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -17,7 +17,7 @@ public class SizedHex extends Hex {
 
     @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
-        EntityAttributeInstance instance = entity.getAttributeInstance(CAttributes.GENERIC_SCALE);
+        EntityAttributeInstance instance = entity.getAttributeInstance(CEntityAttributes.GENERIC_SCALE);
         double value = (this == Hexes.SHRUNK ? -.1d : .1d) * (amplifier + 1);
         modifier = new EntityAttributeModifier("Size Hex modifier", MathHelper.clamp(value, -1d, 16d), EntityAttributeModifier.Operation.ADDITION);
         if (instance != null)
@@ -26,7 +26,7 @@ public class SizedHex extends Hex {
 
     @Override
     public void onRemoved(LivingEntity entity, AttributeContainer attributes, int amplifier) {
-        EntityAttributeInstance instance = entity.getAttributeInstance(CAttributes.GENERIC_SCALE);
+        EntityAttributeInstance instance = entity.getAttributeInstance(CEntityAttributes.GENERIC_SCALE);
         if (instance != null && modifier != null) {
             if (this == Hexes.SHRUNK)
                 instance.removeModifier(modifier);

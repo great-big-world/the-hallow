@@ -2,6 +2,7 @@ package com.github.creoii.hallow.screen;
 
 import com.github.creoii.creolib.api.tag.CItemTags;
 import com.github.creoii.hallow.block.AnointingTableBlock;
+import com.github.creoii.hallow.block.Petrifiable;
 import com.github.creoii.hallow.main.registry.HallowBlocks;
 import com.github.creoii.hallow.main.registry.HallowRecipes;
 import com.github.creoii.hallow.main.registry.HallowSoundEvents;
@@ -20,6 +21,7 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.List;
 import java.util.Optional;
@@ -148,6 +150,12 @@ public class AnointingScreenHandler extends ScreenHandler {
     }
 
     public void updateResult() {
+        MutableBoolean petrified = new MutableBoolean(false);
+        context.run((world, pos) -> {
+            if (world.getBlockState(pos).get(Petrifiable.PETRIFIED)) petrified.setTrue();
+        });
+        if (petrified.booleanValue()) return;
+
         List<AnointingRecipe> list = world.getRecipeManager().getAllMatches(HallowRecipes.ANOINTING_TYPE, input, world);
         if (list.isEmpty()) output.setStack(0, ItemStack.EMPTY);
         else {

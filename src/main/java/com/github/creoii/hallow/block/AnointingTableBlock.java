@@ -26,7 +26,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class AnointingTableBlock extends HorizontalFacingBlock {
+public class AnointingTableBlock extends HorizontalFacingBlock implements Petrifiable {
     private static final VoxelShape BODY = Block.createCuboidShape(0d, 2d, 0d, 16d, 12d, 16d);
     private static final VoxelShape LEG_1 = Block.createCuboidShape(0d, 0d, 0d, 3d, 2d, 3d);
     private static final VoxelShape LEG_2 = Block.createCuboidShape(0d, 0d, 13d, 3d, 2d, 16d);
@@ -38,7 +38,7 @@ public class AnointingTableBlock extends HorizontalFacingBlock {
 
     public AnointingTableBlock() {
         super(CBlockSettings.of(Material.STONE, MapColor.PURPLE).requiresTool().strength(9f, 1200f).luminance(state -> state.get(ACTIVATED) ? 7 : 0));
-        setDefaultState(getStateManager().getDefaultState().with(HORIZONTAL_FACING, Direction.NORTH).with(ACTIVATED, false));
+        setDefaultState(getStateManager().getDefaultState().with(HORIZONTAL_FACING, Direction.NORTH).with(ACTIVATED, false).with(PETRIFIED, false));
     }
 
     @SuppressWarnings("deprecation")
@@ -81,6 +81,6 @@ public class AnointingTableBlock extends HorizontalFacingBlock {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(HORIZONTAL_FACING, ACTIVATED);
+        builder.add(HORIZONTAL_FACING, ACTIVATED, PETRIFIED);
     }
 }

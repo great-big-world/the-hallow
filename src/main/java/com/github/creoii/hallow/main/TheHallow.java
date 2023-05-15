@@ -12,10 +12,12 @@ public class TheHallow implements ModInitializer {
     @Override
     public void onInitialize() {
         HallowBlocks.register();
+        HallowItems.register();
         HallowRecipes.register();
         Hexes.register();
         HallowStatusEffects.register();
         HallowSoundEvents.register();
+        HallowGameEvents.register();
         HallowStats.register();
         HallowEvents.register();
     }
