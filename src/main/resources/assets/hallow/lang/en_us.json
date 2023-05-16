@@ -1,4 +1,7 @@
 {
+  "block.hallow.hallstone": "Hallstone",
+  "block.hallow.hallowed_dirt": "Hallowed Dirt",
+  "block.hallow.hallowed_grass_block": "Hallowed Grass Block",
   "block.hallow.anointing_table": "Anointing Table",
 
   "effect.hallow.hexed": "Hexed",

@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.util.Identifier;
 
-public class HallowItems {
+public final class HallowItems {
     public static final Item TEST_PETRIFY = new TestPetrifyItem();
 
     public static void register() {

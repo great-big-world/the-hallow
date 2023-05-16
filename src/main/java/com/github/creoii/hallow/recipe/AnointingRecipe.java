@@ -1,7 +1,7 @@
 package com.github.creoii.hallow.recipe;
 
 import com.github.creoii.creolib.api.tag.CItemTags;
-import com.github.creoii.hallow.main.registry.HallowRecipes;
+import com.github.creoii.hallow.main.registry.HallowRecipeTypes;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
@@ -104,12 +104,12 @@ public class AnointingRecipe implements Recipe<Inventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return HallowRecipes.ANOINTING_SERIALIZER;
+        return HallowRecipeTypes.ANOINTING_SERIALIZER;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return HallowRecipes.ANOINTING_TYPE;
+        return HallowRecipeTypes.ANOINTING_TYPE;
     }
 
     public static class Type implements RecipeType<AnointingRecipe> { }

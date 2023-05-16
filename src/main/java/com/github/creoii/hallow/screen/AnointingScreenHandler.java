@@ -4,7 +4,7 @@ import com.github.creoii.creolib.api.tag.CItemTags;
 import com.github.creoii.hallow.block.AnointingTableBlock;
 import com.github.creoii.hallow.block.Petrifiable;
 import com.github.creoii.hallow.main.registry.HallowBlocks;
-import com.github.creoii.hallow.main.registry.HallowRecipes;
+import com.github.creoii.hallow.main.registry.HallowRecipeTypes;
 import com.github.creoii.hallow.main.registry.HallowSoundEvents;
 import com.github.creoii.hallow.main.registry.tag.HallowItemTags;
 import com.github.creoii.hallow.recipe.AnointingRecipe;
@@ -43,7 +43,7 @@ public class AnointingScreenHandler extends ScreenHandler {
     }
 
     public AnointingScreenHandler(int id, PlayerInventory inventory, ScreenHandlerContext context) {
-        super(HallowRecipes.ANOINTING_SCREEN, id);
+        super(HallowRecipeTypes.ANOINTING_SCREEN, id);
         world = inventory.player.world;
         this.context = context;
         addSlot(new Slot(input, 0, 27, 31) {
@@ -156,7 +156,7 @@ public class AnointingScreenHandler extends ScreenHandler {
         });
         if (petrified.booleanValue()) return;
 
-        List<AnointingRecipe> list = world.getRecipeManager().getAllMatches(HallowRecipes.ANOINTING_TYPE, input, world);
+        List<AnointingRecipe> list = world.getRecipeManager().getAllMatches(HallowRecipeTypes.ANOINTING_TYPE, input, world);
         if (list.isEmpty()) output.setStack(0, ItemStack.EMPTY);
         else {
             recipe = list.get(0);

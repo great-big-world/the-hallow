@@ -1,0 +1,12 @@
+{
+  "config": {
+    "features": [
+      {
+        "feature": "hallow:big_ebony",
+        "chance": 0.25
+      }
+    ],
+    "default": "hallow:ebony"
+  },
+  "type": "minecraft:random_selector"
+}

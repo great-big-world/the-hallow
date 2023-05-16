@@ -1,0 +1,51 @@
+{
+  "type": "hallow:the_hallow",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "hallow:the_hallow",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "hallow:asphodel_fields",
+          "parameters": {
+            "temperature": 0,
+            "humidity": 0,
+            "continentalness": 0.25,
+            "erosion": 0.25,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "hallow:ebony_woods",
+          "parameters": {
+            "temperature": 0,
+            "humidity": 0,
+            "continentalness": -0.25,
+            "erosion": -0.25,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "hallow:hallow_peaks",
+          "parameters": {
+            "temperature": 0,
+            "humidity": 0,
+            "continentalness": [
+              -0.125,
+              0.125
+            ],
+            "erosion": -0.5,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        }
+      ]
+    }
+  }
+}

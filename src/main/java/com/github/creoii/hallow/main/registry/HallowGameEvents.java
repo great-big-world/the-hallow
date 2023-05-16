@@ -7,7 +7,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.event.GameEvent;
 
-public class HallowGameEvents {
+public final class HallowGameEvents {
     public static GameEvent BLOCK_PETRIFIED;
     
     public static void register() {

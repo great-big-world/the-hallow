@@ -13,7 +13,7 @@ public class TheHallow implements ModInitializer {
     public void onInitialize() {
         HallowBlocks.register();
         HallowItems.register();
-        HallowRecipes.register();
+        HallowRecipeTypes.register();
         Hexes.register();
         HallowStatusEffects.register();
         HallowSoundEvents.register();
