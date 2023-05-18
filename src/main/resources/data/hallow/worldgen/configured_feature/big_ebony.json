@@ -1,6 +1,17 @@
 {
   "config": {
-    "decorators": [],
+    "decorators": [
+      {
+        "type": "minecraft:branch",
+        "state": {
+          "Name": "minecraft:spruce_log"
+        },
+        "chance": 0.5,
+        "random_facing": false,
+        "start_offset": 4,
+        "replaceable": "#minecraft:leaves"
+      }
+    ],
     "ignore_vines": true,
     "force_dirt": false,
     "dirt_provider": {
@@ -10,9 +21,9 @@
       "type": "minecraft:simple_state_provider"
     },
     "minimum_size": {
-      "limit": 3,
-      "lower_size": 2,
-      "upper_size": 1,
+      "limit": 2,
+      "lower_size": 1,
+      "upper_size": 2,
       "type": "minecraft:two_layers_feature_size"
     },
     "trunk_provider": {
@@ -25,10 +36,10 @@
       "type": "minecraft:simple_state_provider"
     },
     "trunk_placer": {
-      "base_height": 9,
-      "height_rand_a": 7,
-      "height_rand_b": 5,
-      "type": "minecraft:fancy_trunk_placer"
+      "base_height": 12,
+      "height_rand_a": 6,
+      "height_rand_b": 3,
+      "type": "minecraft:straight_trunk_placer"
     },
     "foliage_provider": {
       "state": {
@@ -36,15 +47,27 @@
           "persistent": "false",
           "distance": "7"
         },
-        "Name": "minecraft:mangrove_leaves"
+        "Name": "minecraft:spruce_leaves"
       },
       "type": "minecraft:simple_state_provider"
     },
     "foliage_placer": {
-      "radius": 2,
+      "type": "minecraft:aspen_foliage_placer",
       "offset": 2,
-      "height": 1,
-      "type": "minecraft:blob_foliage_placer"
+      "radius":  {
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 3,
+          "max_inclusive": 5
+        }
+      },
+      "trunk_height": {
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 6,
+          "max_inclusive": 9
+        }
+      }
     }
   },
   "type": "minecraft:tree"
