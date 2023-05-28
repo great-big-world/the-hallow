@@ -8,7 +8,7 @@
 
   "container.anoint": "Anoint",
 
-  "hallow.subtitles.block.anointing_table.use": "Anointing Table used",
+  "hallow.subtitles.block.anointing_table.activate": "Anointing Table activated",
 
   "tooltip.anointed": "Anointed"
 }

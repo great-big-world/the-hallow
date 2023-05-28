@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column_horizontal",
+  "textures": {
+    "end": "hallow:block/stripped_ebony_log_top",
+    "side": "hallow:block/stripped_ebony_log"
+  }
+}

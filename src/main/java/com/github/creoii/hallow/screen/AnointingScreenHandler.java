@@ -137,7 +137,7 @@ public class AnointingScreenHandler extends ScreenHandler {
             BlockState state = world.getBlockState(pos);
             if (state.isOf(HallowBlocks.ANOINTING_TABLE)) {
                 world.setBlockState(pos, state.with(AnointingTableBlock.ACTIVATED, true));
-                world.playSound(null, pos, HallowSoundEvents.BLOCK_ANOINTING_TABLE_USE, SoundCategory.BLOCKS, .75f, world.random.nextFloat() * .1f + .3f);
+                world.playSound(null, pos, HallowSoundEvents.BLOCK_ANOINTING_TABLE_ACTIVATE, SoundCategory.BLOCKS, .5f, world.random.nextFloat() * .1f + .3f);
                 world.scheduleBlockTick(pos, state.getBlock(), world.random.nextInt(51) + 50);
             }
         });

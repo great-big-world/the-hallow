@@ -31,7 +31,7 @@
           }
         },
         {
-          "biome": "hallow:hallow_peaks",
+          "biome": "hallow:hallowed_peaks",
           "parameters": {
             "temperature": 0,
             "humidity": 0,

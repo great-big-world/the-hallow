@@ -50,4 +50,9 @@ public abstract class LivingEntityMixin extends Entity implements Attackable {
             cir.setReturnValue(true);
         }
     }
+
+    @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
+    private void hallow_applyGroundedHex(CallbackInfo ci) {
+        if (hasStatusEffect(HallowStatusEffects.GROUNDED_HEX) && !horizontalCollision) ci.cancel();
+    }
 }

@@ -1,8 +1,8 @@
 {
-  "block.anointing_table.use": {
+  "block.anointing_table.activate": {
     "sounds": [
       "hallow:block/anointing_table/anoint"
     ],
-    "subtitle": "hallow.subtitles.block.anointing_table.use"
+    "subtitle": "hallow.subtitles.block.anointing_table.activate"
   }
 }

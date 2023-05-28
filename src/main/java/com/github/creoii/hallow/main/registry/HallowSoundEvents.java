@@ -7,10 +7,10 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
 public final class HallowSoundEvents {
-    public static final SoundEvent BLOCK_ANOINTING_TABLE_USE = SoundEvent.of(new Identifier(TheHallow.NAMESPACE, "block.anointing_table.use"));
+    public static final SoundEvent BLOCK_ANOINTING_TABLE_ACTIVATE = SoundEvent.of(new Identifier(TheHallow.NAMESPACE, "block.anointing_table.activate"));
 
     public static void register() {
-        registerSoundEvent(BLOCK_ANOINTING_TABLE_USE);
+        registerSoundEvent(BLOCK_ANOINTING_TABLE_ACTIVATE);
     }
 
     private static void registerSoundEvent(SoundEvent soundEvent) {

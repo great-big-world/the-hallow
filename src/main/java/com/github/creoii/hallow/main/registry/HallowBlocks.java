@@ -3,6 +3,7 @@ package com.github.creoii.hallow.main.registry;
 import com.github.creoii.creolib.api.util.block.BlockRegistryHelper;
 import com.github.creoii.creolib.api.util.block.CBlockSettings;
 import com.github.creoii.creolib.api.util.item.ItemRegistryHelper;
+import com.github.creoii.creolib.api.util.registry.RegistrySets;
 import com.github.creoii.hallow.block.AnointingTableBlock;
 import com.github.creoii.hallow.main.TheHallow;
 import net.fabricmc.api.EnvType;
@@ -10,6 +11,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.MapColor;
 import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.color.world.GrassColors;
 import net.minecraft.item.ItemGroups;
@@ -23,6 +25,10 @@ public final class HallowBlocks {
     public static final Block HALLOWED_GRASS_BLOCK = new Block(CBlockSettings.copy(Blocks.GRASS_BLOCK));
     //endregion
 
+    //region wood
+    public static final RegistrySets.WoodSet EBONY = RegistrySets.createWoodSet(TheHallow.NAMESPACE, "ebony", MapColor.TERRACOTTA_BLACK, MapColor.BLACK, Items.WARPED_BUTTON, Items.WARPED_STEM, Items.WARPED_HANGING_SIGN);
+    //endregion
+
     //region functional
     public static final Block ANOINTING_TABLE = new AnointingTableBlock();
     //endregion
@@ -31,6 +37,7 @@ public final class HallowBlocks {
         BlockRegistryHelper.registerBlock(new Identifier(TheHallow.NAMESPACE, "hallstone"), HALLSTONE, new ItemRegistryHelper.ItemGroupSettings(ItemGroups.BUILDING_BLOCKS, null), new ItemRegistryHelper.ItemGroupSettings(ItemGroups.NATURAL, null));
         BlockRegistryHelper.registerBlock(new Identifier(TheHallow.NAMESPACE, "hallowed_dirt"), HALLOWED_DIRT, new ItemRegistryHelper.ItemGroupSettings(ItemGroups.BUILDING_BLOCKS, null), new ItemRegistryHelper.ItemGroupSettings(ItemGroups.NATURAL, null));
         BlockRegistryHelper.registerBlock(new Identifier(TheHallow.NAMESPACE, "hallowed_grass_block"), HALLOWED_GRASS_BLOCK, new ItemRegistryHelper.ItemGroupSettings(ItemGroups.BUILDING_BLOCKS, null), new ItemRegistryHelper.ItemGroupSettings(ItemGroups.NATURAL, null));
+        EBONY.register();
         BlockRegistryHelper.registerBlock(new Identifier(TheHallow.NAMESPACE, "anointing_table"), ANOINTING_TABLE, Items.ENCHANTING_TABLE, ItemGroups.FUNCTIONAL);
     }
 

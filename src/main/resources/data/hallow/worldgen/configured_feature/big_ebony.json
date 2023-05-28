@@ -4,12 +4,19 @@
       {
         "type": "minecraft:branch",
         "state": {
-          "Name": "minecraft:spruce_log"
+          "Name": "hallow:ebony_log"
         },
-        "chance": 0.5,
+        "chance": 0.333,
         "random_facing": false,
         "start_offset": 4,
-        "replaceable": "#minecraft:leaves"
+        "replaceable": "#minecraft:leaves",
+        "branch_length": {
+          "type": "minecraft:uniform",
+          "value": {
+            "min_inclusive": 1,
+            "max_inclusive": 3
+          }
+        }
       }
     ],
     "ignore_vines": true,
@@ -31,7 +38,7 @@
         "Properties": {
           "axis": "y"
         },
-        "Name": "minecraft:spruce_log"
+        "Name": "hallow:ebony_log"
       },
       "type": "minecraft:simple_state_provider"
     },

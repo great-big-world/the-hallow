@@ -16,6 +16,8 @@ public final class HallowStatusEffects {
     public static final StatusEffect SHRUNK_HEX = new HexEffect(Hexes.SHRUNK);
     public static final StatusEffect INFLATED_HEX = new HexEffect(Hexes.INFLATED);
     public static final StatusEffect EFFECT_INVERSION_HEX = new HexEffect(Hexes.EFFECT_INVERSION);
+    public static final StatusEffect GROUNDED_HEX = new HexEffect(Hexes.GROUNDED);
+    public static final StatusEffect SHADER_HEX = new HexEffect(Hexes.SHADER);
 
     public static void register() {
         Registry.register(Registries.STATUS_EFFECT, new Identifier(TheHallow.NAMESPACE, "confused_hex"), CONFUSED_HEX);
@@ -25,5 +27,7 @@ public final class HallowStatusEffects {
         Registry.register(Registries.STATUS_EFFECT, new Identifier(TheHallow.NAMESPACE, "shrunk_hex"), SHRUNK_HEX);
         Registry.register(Registries.STATUS_EFFECT, new Identifier(TheHallow.NAMESPACE, "inflated_hex"), INFLATED_HEX);
         Registry.register(Registries.STATUS_EFFECT, new Identifier(TheHallow.NAMESPACE, "effect_inversion_hex"), EFFECT_INVERSION_HEX);
+        Registry.register(Registries.STATUS_EFFECT, new Identifier(TheHallow.NAMESPACE, "grounded_hex"), GROUNDED_HEX);
+        Registry.register(Registries.STATUS_EFFECT, new Identifier(TheHallow.NAMESPACE, "shader_hex"), SHADER_HEX);
     }
 }
