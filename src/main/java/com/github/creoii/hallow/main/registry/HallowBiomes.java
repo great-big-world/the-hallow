@@ -16,7 +16,7 @@ public class HallowBiomes {
     public static void register() {
         FogModifier.register(new FogModifier(
                 fogFunction -> fogFunction.biomeEntry().matchesKey(EBONY_WOODS),
-                fogFunction -> 1f,
+                fogFunction -> 0f,
                 fogFunction -> 5f,
                 FogShape.SPHERE
         ));
