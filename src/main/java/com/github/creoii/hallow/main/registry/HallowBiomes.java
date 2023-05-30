@@ -8,7 +8,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 
-public class HallowBiomes {
+public final class HallowBiomes {
     public static final RegistryKey<Biome> ASPHODEL_FIELDS = RegistryKey.of(RegistryKeys.BIOME, new Identifier(TheHallow.NAMESPACE, "asphodel_fields"));
     public static final RegistryKey<Biome> EBONY_WOODS = RegistryKey.of(RegistryKeys.BIOME, new Identifier(TheHallow.NAMESPACE, "ebony_woods"));
     public static final RegistryKey<Biome> HALLOWED_PEAKS = RegistryKey.of(RegistryKeys.BIOME, new Identifier(TheHallow.NAMESPACE, "hallowed_peaks"));

@@ -18,6 +18,8 @@ public class TheHallow implements ModInitializer {
     public void onInitialize() {
         HallowBlocks.register();
         HallowItems.register();
+        HallowConfiguredFeatures.register();
+        HallowPlacedFeatures.register();
         HallowBiomes.register();
         HallowRecipeTypes.register();
         Hexes.register();

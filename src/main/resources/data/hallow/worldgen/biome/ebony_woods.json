@@ -41,6 +41,7 @@
     [],
     [],
     [
+      "hallow:patch_deadroot",
       "hallow:trees_ebony",
       "minecraft:patch_pumpkin"
     ],
