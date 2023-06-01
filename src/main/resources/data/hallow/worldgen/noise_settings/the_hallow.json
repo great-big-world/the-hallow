@@ -123,12 +123,6 @@
             "type": "minecraft:sequence",
             "sequence": [
               {
-                "type": "minecraft:block",
-                "result_state": {
-                  "Name": "hallow:hallowed_dirt"
-                }
-              },
-              {
                 "type": "minecraft:condition",
                 "if_true": {
                   "type": "minecraft:above_preliminary_surface"
@@ -148,6 +142,12 @@
                     }
                   }
                 }
+              },
+              {
+                "type": "minecraft:block",
+                "result_state": {
+                  "Name": "hallow:hallowed_dirt"
+                }
               }
             ]
           }
@@ -156,4 +156,3 @@
     ]
   }
 }
-
