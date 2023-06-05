@@ -14,10 +14,18 @@ public final class HallowBiomes {
     public static final RegistryKey<Biome> HALLOWED_PEAKS = RegistryKey.of(RegistryKeys.BIOME, new Identifier(TheHallow.NAMESPACE, "hallowed_peaks"));
 
     public static void register() {
-        FogModifier.register(new FogModifier(
-                fogFunction -> fogFunction.biomeEntry().matchesKey(EBONY_WOODS),
-                fogFunction -> 0f,
-                fogFunction -> 5f,
+        FogModifier.register(FogModifier.create(
+                fogFunction -> fogFunction.biomeEntry() != null && fogFunction.biomeEntry().matchesKey(EBONY_WOODS),
+                fogFunction -> 24f,
+                fogFunction -> 48f,
+                .005f,
+                FogShape.SPHERE
+        ));
+        FogModifier.register(FogModifier.create(
+                fogFunction -> fogFunction.biomeEntry() != null && (fogFunction.biomeEntry().matchesKey(ASPHODEL_FIELDS) || fogFunction.biomeEntry().matchesKey(HALLOWED_PEAKS)),
+                fogFunction -> 32f,
+                fogFunction -> 96f,
+                .02f,
                 FogShape.SPHERE
         ));
     }

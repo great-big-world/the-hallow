@@ -25,10 +25,10 @@
     "block.TurtleEggBlockMixin",
     "entity.LivingEntityMixin"
   ],
-  "injectors": {
-    "defaultRequire": 1
-  },
   "client": [
     "client.MouseMixin"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

@@ -44,7 +44,7 @@ public class AnointingScreenHandler extends ScreenHandler {
 
     public AnointingScreenHandler(int id, PlayerInventory inventory, ScreenHandlerContext context) {
         super(HallowRecipeTypes.ANOINTING_SCREEN, id);
-        world = inventory.player.world;
+        world = inventory.player.getWorld();
         this.context = context;
         addSlot(new Slot(input, 0, 27, 31) {
             @Override
@@ -128,8 +128,8 @@ public class AnointingScreenHandler extends ScreenHandler {
     }
 
     protected void onTakeOutput(PlayerEntity player, ItemStack stack) {
-        stack.onCraft(player.world, player, stack.getCount());
-        output.unlockLastRecipe(player);
+        stack.onCraft(player.getWorld(), player, stack.getCount());
+        output.unlockLastRecipe(player, getInputStacks());
         decrease(0);
         decrease(1);
         decrease(2);
@@ -141,6 +141,10 @@ public class AnointingScreenHandler extends ScreenHandler {
                 world.scheduleBlockTick(pos, state.getBlock(), world.random.nextInt(51) + 50);
             }
         });
+    }
+
+    private List<ItemStack> getInputStacks() {
+        return List.of(input.getStack(0), input.getStack(1), input.getStack(2), input.getStack(3));
     }
 
     private void decrease(int index) {

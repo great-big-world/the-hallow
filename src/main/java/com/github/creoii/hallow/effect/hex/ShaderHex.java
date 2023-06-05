@@ -45,7 +45,7 @@ public class ShaderHex extends Hex {
 
     @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
-        if (entity.world.isClient) {
+        if (entity.getWorld().isClient) {
             Identifier id = POST_PROCESSORS.get(entity.getRandom().nextInt(POST_PROCESSORS.size()));
             System.out.println(id);
             ClientUtil.loadPostProcessor(id);
@@ -54,7 +54,7 @@ public class ShaderHex extends Hex {
 
     @Override
     public void onRemoved(LivingEntity entity, AttributeContainer attributes, int amplifier) {
-        if (entity.world.isClient)
+        if (entity.getWorld().isClient)
             ClientUtil.clearPostProcessing();
     }
 }

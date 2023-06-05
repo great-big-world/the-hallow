@@ -5,9 +5,9 @@ import com.github.creoii.hallow.screen.AnointingScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
@@ -35,23 +35,23 @@ public class AnointingScreen extends HandledScreen<AnointingScreenHandler> imple
         handler.removeListener(this);
     }
 
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackground(context);
+        super.render(context, mouseX, mouseY, delta);
         RenderSystem.disableBlend();
-        drawMouseoverTooltip(matrices, mouseX, mouseY);
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int i = (width - backgroundWidth) / 2;
         int j = (height - backgroundHeight) / 2;
-        drawTexture(matrices, i, j, 0, 0, backgroundWidth, backgroundHeight);
-        drawTexture(matrices, i + 59, j + 20, 0, backgroundHeight + (handler.getSlot(0).hasStack() ? 0 : 16), 110, 16);
+        context.drawTexture(TEXTURE, i, j, 0, 0, backgroundWidth, backgroundHeight);
+        context.drawTexture(TEXTURE, i + 59, j + 20, 0, backgroundHeight + (handler.getSlot(0).hasStack() ? 0 : 16), 110, 16);
         if (handler.getSlot(0).hasStack() || (handler.getSlot(1).hasStack()) && !handler.getSlot(2).hasStack()) {
-            drawTexture(matrices, i + 99, j + 28, backgroundWidth, 0, 28, 21);
+            context.drawTexture(TEXTURE, i + 99, j + 28, backgroundWidth, 0, 28, 21);
         }
     }
 
@@ -59,8 +59,8 @@ public class AnointingScreen extends HandledScreen<AnointingScreenHandler> imple
 
     public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {}
 
-    protected void drawForeground(MatrixStack matrixStack, int x, int y) {
+    protected void drawForeground(DrawContext context, int x, int y) {
         RenderSystem.disableBlend();
-        super.drawForeground(matrixStack, x, y);
+        super.drawForeground(context, x, y);
     }
 }

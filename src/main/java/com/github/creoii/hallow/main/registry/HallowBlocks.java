@@ -56,7 +56,8 @@ public final class HallowBlocks {
     @Environment(EnvType.CLIENT)
     public static void registerClient() {
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
-                DEADROOT
+                DEADROOT,
+                EBONY.door()
         );
 
         ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {

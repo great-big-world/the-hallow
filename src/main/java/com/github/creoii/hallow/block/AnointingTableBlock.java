@@ -37,7 +37,7 @@ public class AnointingTableBlock extends HorizontalFacingBlock implements Petrif
     public static final BooleanProperty ACTIVATED = BooleanProperty.of("activated");
 
     public AnointingTableBlock() {
-        super(CBlockSettings.of(Material.STONE, MapColor.PURPLE).requiresTool().strength(9f, 1200f).luminance(state -> state.get(ACTIVATED) ? 7 : 0));
+        super(CBlockSettings.create().mapColor(MapColor.PURPLE).requiresTool().strength(9f, 1200f).luminance(state -> state.get(ACTIVATED) ? 7 : 0));
         setDefaultState(getStateManager().getDefaultState().with(HORIZONTAL_FACING, Direction.NORTH).with(ACTIVATED, false).with(PETRIFIED, false));
     }
 
