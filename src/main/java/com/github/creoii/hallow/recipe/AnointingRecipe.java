@@ -2,15 +2,18 @@ package com.github.creoii.hallow.recipe;
 
 import com.github.creoii.creolib.api.tag.CItemTags;
 import com.github.creoii.hallow.main.registry.HallowRecipeTypes;
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -29,12 +32,14 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 public class AnointingRecipe implements Recipe<Inventory> {
+    public static final String ANOINTMENT_BONUS_KEY = "Anointment bonus";
     private final Identifier id;
     private final EquipmentType equipmentType;
     private final Item anointment;
     private final EntityAttribute attribute;
     private final double amount;
     private ItemStack output;
+    private PlayerEntity player;
 
     public AnointingRecipe(Identifier id, EquipmentType equipmentType, Item anointment, EntityAttribute attribute, double amount) {
         this.id = id;
@@ -69,6 +74,11 @@ public class AnointingRecipe implements Recipe<Inventory> {
         this.output = output;
     }
 
+    public AnointingRecipe withPlayer(PlayerEntity player) {
+        this.player = player;
+        return this;
+    }
+
     @Override
     public boolean matches(Inventory inventory, World world) {
         if (inventory.size() < 3 || inventory.size() > 3) return false;
@@ -81,20 +91,43 @@ public class AnointingRecipe implements Recipe<Inventory> {
         if (stack.getOrCreateNbt().getBoolean("Anointed")) return ItemStack.EMPTY;
 
         double amount = getAmount();
-        EquipmentSlot slot = LivingEntity.getPreferredEquipmentSlot(stack);
+        EquipmentSlot slot;
+        if (stack.getItem() instanceof Equipment equipment) {
+            slot = equipment.getSlotType();
+        } else slot = EquipmentSlot.MAINHAND;
 
-        Multimap<EntityAttribute, EntityAttributeModifier> oldAttributesMap = stack.getAttributeModifiers(slot);
-        Multimap<EntityAttribute, EntityAttributeModifier> newAttributesMap = HashMultimap.create();
-        for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : oldAttributesMap.entries()) {
-            EntityAttributeModifier modifier = entry.getValue();
-            if (entry.getKey() != attribute || modifier.getOperation() != EntityAttributeModifier.Operation.ADDITION) {
-                newAttributesMap.put(entry.getKey(), modifier);
-            } else amount += modifier.getValue();
-        }
-        stack.addAttributeModifier(attribute, new EntityAttributeModifier("Anointment bonus", amount, EntityAttributeModifier.Operation.ADDITION), slot);
-        newAttributesMap.forEach((attribute1, entityAttributeModifier) -> stack.addAttributeModifier(attribute1, entityAttributeModifier, slot));
+        Multimap<EntityAttribute, EntityAttributeModifier> oldAttributesMap = reverse(stack.getAttributeModifiers(slot));
+        oldAttributesMap.put(attribute, new EntityAttributeModifier(ANOINTMENT_BONUS_KEY, amount, EntityAttributeModifier.Operation.ADDITION));
+        Multimap<EntityAttribute, EntityAttributeModifier> newModifiers = LinkedListMultimap.create();
+        Multimap<EntityAttribute, EntityAttributeModifier> addModifiers = LinkedListMultimap.create();
+
+        oldAttributesMap.forEach((entityAttribute, entityAttributeModifier) -> {
+            if (entityAttributeModifier.getName().equals("Anointment bonus")) {
+                addModifiers.put(entityAttribute, entityAttributeModifier);
+            } else {
+                double value = entityAttributeModifier.getValue() + player.getAttributeBaseValue(entityAttribute);
+                if (entityAttribute == EntityAttributes.GENERIC_ATTACK_DAMAGE) {
+                    value += EnchantmentHelper.getAttackDamage(stack, EntityGroup.DEFAULT);
+                }
+                newModifiers.put(entityAttribute, new EntityAttributeModifier(entityAttributeModifier.getId(), entityAttributeModifier.getName(), value, entityAttributeModifier.getOperation()));
+            }
+        });
+        newModifiers.putAll(addModifiers);
+
+        newModifiers.forEach((attribute1, entityAttributeModifier) -> stack.addAttributeModifier(attribute1, entityAttributeModifier, slot));
         EnchantmentHelper.set(EnchantmentHelper.get(inventory.getStack(0)), stack);
         return stack;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Multimap<EntityAttribute, EntityAttributeModifier> reverse(Multimap<EntityAttribute, EntityAttributeModifier> multimap) {
+        Multimap<EntityAttribute, EntityAttributeModifier> reversed = LinkedListMultimap.create();
+        Map.Entry<EntityAttribute, EntityAttributeModifier>[] array = multimap.entries().toArray(new Map.Entry[]{});
+        for (int i = array.length - 1; i >= 0; --i) {
+            Map.Entry<EntityAttribute, EntityAttributeModifier> entry = array[i];
+            reversed.put(entry.getKey(), entry.getValue());
+        }
+        return reversed;
     }
 
     @Override

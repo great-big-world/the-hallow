@@ -7,8 +7,6 @@
     "block.BeetrootsBlockMixin",
     "block.BigDripleafBlockMixin",
     "block.ConcretePowderBlockMixin",
-    "block.CoralBlockBlockMixin",
-    "block.CoralParentBlockMixin",
     "block.CropBlockMixin",
     "block.FallingBlockMixin",
     "block.FarmlandBlockMixin",
@@ -23,7 +21,11 @@
     "block.SpreadableBlockMixin",
     "block.TorchflowerBlockMixin",
     "block.TurtleEggBlockMixin",
-    "entity.LivingEntityMixin"
+    "block.coral.CoralBlockBlockMixin",
+    "block.coral.CoralParentBlockMixin",
+    "block.coral.CoralWallFanBlockMixin",
+    "entity.LivingEntityMixin",
+    "item.ItemStackMixin"
   ],
   "client": [
     "client.MouseMixin"

@@ -4,6 +4,7 @@ import com.github.creoii.creolib.api.tag.CItemTags;
 import com.github.creoii.hallow.block.AnointingTableBlock;
 import com.github.creoii.hallow.block.Petrifiable;
 import com.github.creoii.hallow.main.registry.HallowBlocks;
+import com.github.creoii.hallow.main.registry.HallowParticleTypes;
 import com.github.creoii.hallow.main.registry.HallowRecipeTypes;
 import com.github.creoii.hallow.main.registry.HallowSoundEvents;
 import com.github.creoii.hallow.main.registry.tag.HallowItemTags;
@@ -30,6 +31,7 @@ public class AnointingScreenHandler extends ScreenHandler {
     private final World world;
     private AnointingRecipe recipe;
     protected final ScreenHandlerContext context;
+    protected final PlayerEntity player;
     protected final CraftingResultInventory output = new CraftingResultInventory();
     protected final Inventory input = new SimpleInventory(3) {
         public void markDirty() {
@@ -44,7 +46,8 @@ public class AnointingScreenHandler extends ScreenHandler {
 
     public AnointingScreenHandler(int id, PlayerInventory inventory, ScreenHandlerContext context) {
         super(HallowRecipeTypes.ANOINTING_SCREEN, id);
-        world = inventory.player.getWorld();
+        player = inventory.player;
+        world = player.getWorld();
         this.context = context;
         addSlot(new Slot(input, 0, 27, 31) {
             @Override
@@ -139,6 +142,12 @@ public class AnointingScreenHandler extends ScreenHandler {
                 world.setBlockState(pos, state.with(AnointingTableBlock.ACTIVATED, true));
                 world.playSound(null, pos, HallowSoundEvents.BLOCK_ANOINTING_TABLE_ACTIVATE, SoundCategory.BLOCKS, .5f, world.random.nextFloat() * .1f + .3f);
                 world.scheduleBlockTick(pos, state.getBlock(), world.random.nextInt(51) + 50);
+                if (world.isClient) {
+                    double x = pos.getX() - .5d + world.random.nextFloat();
+                    double y = pos.getY() - .5d + world.random.nextFloat();
+                    double z = pos.getZ() - .5d + world.random.nextFloat();
+                    world.addParticle(HallowParticleTypes.ANOINT_SWORD, x, y, z, 0d, world.random.nextFloat() * world.random.nextFloat() * .5d, 0d);
+                }
             }
         });
     }
@@ -164,7 +173,7 @@ public class AnointingScreenHandler extends ScreenHandler {
         if (list.isEmpty()) output.setStack(0, ItemStack.EMPTY);
         else {
             recipe = list.get(0);
-            ItemStack stack = recipe.craft(input, world.getRegistryManager());
+            ItemStack stack = recipe.withPlayer(player).craft(input, world.getRegistryManager());
             recipe.setOutput(stack);
             stack.getOrCreateNbt().putBoolean("Anointed", true);
             output.setLastRecipe(recipe);

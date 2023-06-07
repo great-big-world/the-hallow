@@ -1,4 +1,4 @@
-package com.github.creoii.hallow.mixin.block;
+package com.github.creoii.hallow.mixin.block.coral;
 
 import com.github.creoii.hallow.block.Petrifiable;
 import net.minecraft.block.Block;

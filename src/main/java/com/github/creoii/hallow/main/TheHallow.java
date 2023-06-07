@@ -24,6 +24,7 @@ public class TheHallow implements ModInitializer {
         HallowRecipeTypes.register();
         Hexes.register();
         HallowStatusEffects.register();
+        HallowParticleTypes.register();
         HallowSoundEvents.register();
         HallowGameEvents.register();
         HallowStats.register();

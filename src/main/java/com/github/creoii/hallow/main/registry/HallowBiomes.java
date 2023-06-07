@@ -17,8 +17,8 @@ public final class HallowBiomes {
         FogModifier.register(FogModifier.create(
                 fogFunction -> fogFunction.biomeEntry() != null && fogFunction.biomeEntry().matchesKey(EBONY_WOODS),
                 fogFunction -> 24f,
-                fogFunction -> 48f,
-                .005f,
+                fogFunction -> 64f,
+                .008f,
                 FogShape.SPHERE
         ));
         FogModifier.register(FogModifier.create(
