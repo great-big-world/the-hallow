@@ -58,6 +58,10 @@ public class AnointingRecipe implements Recipe<Inventory> {
         return id;
     }
 
+    public EquipmentType getEquipmentType() {
+        return equipmentType;
+    }
+
     public Item getAnointment() {
         return anointment;
     }

@@ -17,6 +17,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -142,14 +144,27 @@ public class AnointingScreenHandler extends ScreenHandler {
                 world.setBlockState(pos, state.with(AnointingTableBlock.ACTIVATED, true));
                 world.playSound(null, pos, HallowSoundEvents.BLOCK_ANOINTING_TABLE_ACTIVATE, SoundCategory.BLOCKS, .5f, world.random.nextFloat() * .1f + .3f);
                 world.scheduleBlockTick(pos, state.getBlock(), world.random.nextInt(51) + 50);
-                if (world.isClient) {
+
+                for (int i = 0; i < 6; ++i) {
                     double x = pos.getX() - .5d + world.random.nextFloat();
                     double y = pos.getY() - .5d + world.random.nextFloat();
                     double z = pos.getZ() - .5d + world.random.nextFloat();
-                    world.addParticle(HallowParticleTypes.ANOINT_SWORD, x, y, z, 0d, world.random.nextFloat() * world.random.nextFloat() * .5d, 0d);
+                    world.addParticle(getParticle(stack), x, y, z, 0d, world.random.nextFloat() * world.random.nextFloat() * .5d, 0d);
                 }
             }
         });
+    }
+
+    private static ParticleEffect getParticle(ItemStack stack) {
+        if (stack.isIn(ItemTags.SWORDS)) return HallowParticleTypes.ANOINT_SWORD;
+        else if (stack.isIn(ItemTags.PICKAXES)) return HallowParticleTypes.ANOINT_PICKAXE;
+        else if (stack.isIn(ItemTags.SHOVELS)) return HallowParticleTypes.ANOINT_SHOVEL;
+        else if (stack.isIn(ItemTags.HOES)) return HallowParticleTypes.ANOINT_HOE;
+        else if (stack.isIn(CItemTags.HELMETS)) return HallowParticleTypes.ANOINT_HELMET;
+        else if (stack.isIn(CItemTags.CHESTPLATES)) return HallowParticleTypes.ANOINT_CHESTPLATE;
+        else if (stack.isIn(CItemTags.LEGGINGS)) return HallowParticleTypes.ANOINT_LEGGINGS;
+        else if (stack.isOf(Items.ELYTRA)) return HallowParticleTypes.ANOINT_ELYTRA;
+        return HallowParticleTypes.ANOINT_BOW;
     }
 
     private List<ItemStack> getInputStacks() {
